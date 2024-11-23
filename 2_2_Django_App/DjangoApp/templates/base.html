@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Django Blog{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% load crispy_forms_tags %}
+</head>
+<body>
+<nav class="px-5 navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'blog:post_list' %}">Django Blog</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:post_create' %}">New Post</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% if user.is_authenticated %}
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Hello, {{ user.username }}!</a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+</nav>
+
+<div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
