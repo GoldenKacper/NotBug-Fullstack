@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {PokemonService} from '../../services/pokemon.service';
 import {Pokemon} from '../../models/pokemon.model';
@@ -11,15 +12,17 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-pokemon-details',
   templateUrl: './pokemon-details.component.html',
-  styleUrl: './pokemon-details.component.scss',
+  styleUrls: ['./pokemon-details.component.scss'],
+  standalone: true,
   imports: [
+    CommonModule,
     TitleCasePipe,
     NgIf,
     MatChipsModule,
     NgForOf,
     MatTableModule,
     NgOptimizedImage,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
 })
 

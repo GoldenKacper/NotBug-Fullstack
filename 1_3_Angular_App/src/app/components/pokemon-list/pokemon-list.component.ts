@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {PokemonService} from '../../services/pokemon.service';
 import {PokemonListItem} from '../../models/pokemon.model';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
@@ -10,14 +11,16 @@ import {FormsModule} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 import {MatInputModule} from '@angular/material/input';
-import { InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
-  styleUrl: './pokemon-list.component.scss',
+  styleUrls: ['./pokemon-list.component.scss'],
+  standalone: true,
   imports: [
+    CommonModule,
     MatFormFieldModule,
     MatGridListModule,
     MatCardModule,
@@ -28,7 +31,7 @@ import { InfiniteScrollModule} from 'ngx-infinite-scroll';
     NgForOf,
     MatInputModule,
     TitleCasePipe,
-    InfiniteScrollModule
+    InfiniteScrollModule,
   ],
 })
 

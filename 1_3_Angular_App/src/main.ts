@@ -1,21 +1,24 @@
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {bootstrapApplication} from '@angular/platform-browser';
 import {AppComponent} from './app/app.component';
-import {HTTP_INTERCEPTORS, provideHttpClient} from '@angular/common/http';
-import {HttpErrorInterceptor} from './app/interceptors/http-error.interceptor';
 import {importProvidersFrom} from '@angular/core';
-import {BrowserModule, bootstrapApplication} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterModule} from '@angular/router';
+import {provideRouter} from '@angular/router';
 import {routes} from './app/app.routes';
+import {provideHttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HttpErrorInterceptor} from './app/interceptors/http-error.interceptor';
+
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      BrowserModule,
-      BrowserAnimationsModule,
-      RouterModule.forRoot(routes),
+      BrowserAnimationsModule // Removed BrowserModule as it's not needed in standalone components
     ),
-    {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
-  ]
-}).catch(err => console.error(err));
-
+    provideRouter(routes), // Replaced RouterModule.forRoot(routes) with provideRouter
+    provideHttpClient(), // Added provideHttpClient()
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
+    },
+  ],
+}).catch((err) => console.error(err));
