@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="header" fxLayout="row" fxLayoutAlign="space-between center">
+    <h1>Car List</h1>
+    <button mat-raised-button color="primary" (click)="onAddCar()">
+      <mat-icon>add</mat-icon> Add New Car
+    </button>
+  </div>
+
+  <mat-grid-list cols="1" gutterSize="16px" rowHeight="8:1" *ngIf="cars.length > 0; else noCars">
+    <mat-grid-tile *ngFor="let car of cars">
+      <mat-card class="car-card" (click)="onSelectCar(car)">
+        <mat-card-header>
+          <mat-card-title>{{ car.make }} {{ car.model }}</mat-card-title>
+          <mat-card-subtitle>Year: {{ car.year }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Total Services: {{ car.services.length }}</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <ng-template #noCars>
+    <p>No cars available. Click "Add New Car" to get started!</p>
+  </ng-template>
+</div>
+

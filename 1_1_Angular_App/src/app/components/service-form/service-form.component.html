@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Add Service Record</h1>
+<div mat-dialog-content>
+  <form [formGroup]="serviceForm" fxLayout="column" fxLayoutGap="16px">
+    <mat-form-field appearance="outline">
+      <mat-label>Part</mat-label>
+      <input matInput formControlName="part" placeholder="e.g., Brake Pads" />
+      <mat-error *ngIf="serviceForm.get('part')?.hasError('required')">
+        Part is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cost</mat-label>
+      <input matInput type="number" formControlName="cost" placeholder="e.g., 150" />
+      <mat-error *ngIf="serviceForm.get('cost')?.hasError('required')">
+        Cost is required
+      </mat-error>
+      <mat-error *ngIf="serviceForm.get('cost')?.hasError('min')">
+        Cost cannot be negative
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Select Date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="serviceForm.get('date')?.hasError('required')">
+        Date is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="16px">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="serviceForm.invalid">
+    <mat-icon>check_circle</mat-icon> Add Service
+  </button>
+</div>

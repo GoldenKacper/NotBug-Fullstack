@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+
+
+/* Custom global styles */
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #fafafa;
+}
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+h1, h2 {
+  color: #333;
+}
+
+button mat-icon {
+  margin-right: 8px;
+}
+
+.mat-card {
+  transition: box-shadow 0.3s;
+}
+
+.mat-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
