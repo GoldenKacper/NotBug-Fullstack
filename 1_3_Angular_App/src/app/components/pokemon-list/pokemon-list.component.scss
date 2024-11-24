@@ -1,0 +1,30 @@
+.container {
+  padding: 16px;
+}
+
+.pokemon-list {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pokemon-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+  opacity: 0;
+  animation: fadeInUp 0.5s forwards;
+}
+
+.pokemon-card:hover {
+  transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}

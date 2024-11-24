@@ -1,0 +1,21 @@
+<div class="container">
+  <h1>Pokémon List</h1>
+  <mat-form-field appearance="fill">
+    <mat-label>Search Pokémon</mat-label>
+    <input matInput [(ngModel)]="searchTerm" placeholder="Enter Pokémon name"/>
+  </mat-form-field>
+
+  <div class="pokemon-list" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300"
+       (scrolled)="onScroll()">
+    <mat-grid-list [cols]="cols" rowHeight="1:1" gutterSize="1rem">
+      <mat-grid-tile *ngFor="let pokemon of filteredPokemonList">
+        <mat-card class="pokemon-card" [routerLink]="['/pokemon', pokemon.name]">
+          <mat-card-header>
+            <mat-card-title>{{ pokemon.name | titlecase }}</mat-card-title>
+          </mat-card-header>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+.container {
+  padding: 16px;
+}
+
+.pokemon-image {
+  width: 200px;
+  height: 200px;
+}
+
+.stats-table {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.chip-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
