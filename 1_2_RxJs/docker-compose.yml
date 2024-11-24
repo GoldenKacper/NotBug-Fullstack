@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: 1_2_RxJs
+    command: ["node", "./dist/index.js", "${COUNTRY}"]
+    environment:
+      - COUNTRY=Poland
