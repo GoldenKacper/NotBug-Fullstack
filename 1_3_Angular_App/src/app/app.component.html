@@ -1,3 +1,4 @@
+
 <style>
   :host {
     --bright-blue: oklch(51.01% 0.274 263.83);
@@ -170,17 +171,11 @@
   }
 </style>
 
-<mat-toolbar color="primary" class="toolbar">
-  <h1>CAR SERVICE APP</h1>
+<mat-toolbar color="primary">
+  <span>Pokémon App</span>
   <span class="spacer"></span>
-  <button mat-raised-button color="secondary" routerLink="/cars">
-    <mat-icon>home</mat-icon>
-    Home
-  </button>
-  <button mat-raised-button color="secondary" routerLink="/cars/new">
-    <mat-icon>add</mat-icon>
-    Add Car
-  </button>
+  <button mat-button routerLink="/pokemons">Home</button>
 </mat-toolbar>
+<!-- TODO Fix dockerfile and docker-compose.yml -->
 
 <router-outlet/>

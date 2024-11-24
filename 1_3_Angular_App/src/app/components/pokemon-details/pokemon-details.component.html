@@ -1,0 +1,45 @@
+
+<div class="container" *ngIf="!isLoading && pokemon; else loading">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ pokemon.name | titlecase }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <img [ngSrc]="pokemon.sprites.front_default" [alt]="pokemon.name" class="pokemon-image" width="200" height="200" />
+
+      <h2>Types</h2>
+      <ul class="chip-list">
+        <mat-chip *ngFor="let type of pokemon.types">{{ type.type.name }}</mat-chip>
+      </ul>
+
+      <h2>Abilities</h2>
+      <ul>
+        <li *ngFor="let ability of pokemon.abilities">{{ ability.ability.name }}</li>
+      </ul>
+
+      <h2>Stats</h2>
+      <table mat-table [dataSource]="pokemon.stats" class="mat-elevation-z8 stats-table">
+        <ng-container matColumnDef="stat">
+          <th mat-header-cell *matHeaderCellDef>Stat</th>
+          <td mat-cell *matCellDef="let element">{{ element.stat.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>Value</th>
+          <td mat-cell *matCellDef="let element">{{ element.base_stat }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['stat', 'value']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['stat', 'value'];"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>
+
+<div *ngIf="error">
+  <p>{{ error }}</p>
+</div>
