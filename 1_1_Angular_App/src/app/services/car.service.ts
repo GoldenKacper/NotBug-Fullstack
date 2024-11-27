@@ -1,25 +1,27 @@
-import {Injectable, Inject, PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
-import {Car} from '../models/car.model';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Car } from '../models/car.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarService {
   private localStorageKey = 'cars';
-  private readonly cars: Car[] = [];
+  private carsSubject: BehaviorSubject<Car[]> = new BehaviorSubject<Car[]>([]);
+  public cars$: Observable<Car[]> = this.carsSubject.asObservable();
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
-      const carsFromStorage = localStorage.getItem('cars');
+      const carsFromStorage = localStorage.getItem(this.localStorageKey);
       if (carsFromStorage) {
-        this.cars = JSON.parse(carsFromStorage);
+        this.carsSubject.next(JSON.parse(carsFromStorage));
       }
     }
   }
 
   getCars(): Car[] {
-    return this.cars;
+    return this.carsSubject.getValue();
   }
 
   getCarById(id: number): Car | undefined {
@@ -33,15 +35,14 @@ export class CarService {
   }
 
   updateCar(car: Car): void {
-    const index = this.cars.findIndex(c => c.id === car.id);
+    const cars = this.getCars();
+    const index = cars.findIndex(c => c.id === car.id);
     if (index !== -1) {
-      this.cars[index] = car;
+      cars[index] = car;
     } else {
-      this.cars.push(car);
+      cars.push(car);
     }
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('cars', JSON.stringify(this.cars));
-    }
+    this.saveCars(cars);
   }
 
   deleteCar(id: number): void {
@@ -53,5 +54,6 @@ export class CarService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(this.localStorageKey, JSON.stringify(cars));
     }
+    this.carsSubject.next(cars);
   }
 }

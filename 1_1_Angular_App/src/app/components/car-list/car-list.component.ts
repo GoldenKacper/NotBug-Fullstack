@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CarService} from '../../services/car.service';
 import {Car} from '../../models/car.model';
 import {Router} from '@angular/router';
+import { Subscription } from 'rxjs';
 import {CommonModule} from '@angular/common';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
@@ -32,20 +33,25 @@ import {MatIconModule} from '@angular/material/icon';
   ]
 })
 
-// @Component({
-//   selector: 'app-car-list',
-//   templateUrl: './car-list.component.html',
-//   styleUrls: ['./car-list.component.scss']
-// })
-
-export class CarListComponent implements OnInit {
+export class CarListComponent implements OnInit, OnDestroy {
   cars: Car[] = [];
+  private carsSubscription!: Subscription;
 
-  constructor(private carService: CarService, public router: Router) {
+  constructor(private carService: CarService, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.cars = this.carService.getCars();
+    this.carsSubscription = this.carService.cars$.subscribe(cars => {
+      this.cars = cars;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.carsSubscription.unsubscribe();
+  }
+
+  onDeleteCar(id: number): void {
+    this.carService.deleteCar(id);
   }
 
   onSelectCar(car: Car): void {

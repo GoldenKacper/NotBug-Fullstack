@@ -20,7 +20,7 @@
     </button>
   </div>
 
-  <mat-table [dataSource]="car.services" class="mat-elevation-z8 service-table">
+  <mat-table [dataSource]="serviceDataSource" class="mat-elevation-z8 service-table">
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Date</th>
       <td mat-cell *matCellDef="let service">{{ service.date | date:'longDate' }}</td>
@@ -36,8 +36,8 @@
       <td mat-cell *matCellDef="let service">{{ service.cost | currency }}</td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['date', 'part', 'cost']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['date', 'part', 'cost'];"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </mat-table>
 </div>
 
