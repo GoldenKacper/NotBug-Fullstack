@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table';
+import {MatTableModule, MatTableDataSource} from '@angular/material/table';
 import {CarService} from '../../services/car.service';
-import {Car} from '../../models/car.model';
+import {Car, ServiceRecord} from '../../models/car.model';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {ServiceFormComponent} from '../service-form/service-form.component';
-import {MatDivider} from '@angular/material/divider';
+import {MatDividerModule} from '@angular/material/divider';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-car-details',
@@ -23,15 +24,17 @@ import {MatCardModule} from '@angular/material/card';
     MatDialogModule,
     MatTableModule,
     RouterModule,
-    MatDivider,
+    MatDividerModule,
     FlexLayoutModule,
     MatIconModule,
     MatCardModule
   ]
 })
-
-export class CarDetailsComponent implements OnInit {
+export class CarDetailsComponent implements OnInit, OnDestroy {
   car!: Car;
+  serviceDataSource: MatTableDataSource<ServiceRecord> = new MatTableDataSource<ServiceRecord>();
+  displayedColumns: string[] = ['date', 'part', 'cost'];
+  private carsSubscription!: Subscription;
 
   constructor(
     private carService: CarService,
@@ -46,9 +49,27 @@ export class CarDetailsComponent implements OnInit {
     const car = this.carService.getCarById(carId);
     if (car) {
       this.car = car;
+      this.serviceDataSource.data = this.car.services;
     } else {
       // Handle car not found
       this.router.navigate(['/cars']);
+    }
+
+    this.carsSubscription = this.carService.cars$.subscribe(cars => {
+      const updatedCar = cars.find(c => c.id === this.car.id);
+      if (updatedCar) {
+        this.car = updatedCar;
+        this.serviceDataSource.data = this.car.services;
+      } else {
+        // Car was deleted
+        this.router.navigate(['/cars']);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.carsSubscription) {
+      this.carsSubscription.unsubscribe();
     }
   }
 
@@ -69,7 +90,7 @@ export class CarDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.ngOnInit(); // Refresh data
+        // No need to call ngOnInit(), the subscription will handle the update
       }
     });
   }

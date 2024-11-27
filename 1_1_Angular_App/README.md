@@ -9,6 +9,7 @@ This project is an Angular application designed to manage a list of cars. It inc
 - Delete cars from the list
 - Persist car data using localStorage
 - Responsive UI using Angular Material and Flex Layout
+- Dynamic and immediate changes in views for a better user experience
 - Dockerized setup for easy deployment
 
 ## Technologies Used
@@ -18,6 +19,8 @@ This project is an Angular application designed to manage a list of cars. It inc
 - **Angular**: A framework for building single-page applications.
 - **Angular Material**: A UI component library based on Material Design.
 - **Angular Flex Layout**: A library for layout management using Flexbox.
+- **RxJS:** A library for reactive programming using Observables.
+- **Angular CLI:** A command-line interface tool to initialize, develop, scaffold, and maintain Angular applications.
 - **Docker**: A platform for developing, shipping, and running applications in containers.
 - **Docker Compose**: A tool for defining and running multi-container Docker applications.
 

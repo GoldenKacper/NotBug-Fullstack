@@ -1,17 +1,17 @@
-import {Component, Inject} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
-import {CarService} from '../../services/car.service';
-import {FormGroup, FormBuilder, Validators, ReactiveFormsModule} from '@angular/forms';
-import {ServiceRecord, Car} from '../../models/car.model';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatButtonModule} from '@angular/material/button';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatIconModule} from '@angular/material/icon';
-
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { CarService } from '../../services/car.service';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ServiceRecord, Car } from '../../models/car.model';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-service-form',
@@ -31,10 +31,10 @@ import {MatIconModule} from '@angular/material/icon';
     MatIconModule
   ]
 })
-
-export class ServiceFormComponent {
+export class ServiceFormComponent implements OnInit, OnDestroy {
   serviceForm!: FormGroup;
   car!: Car;
+  private carsChangedSubscription!: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<ServiceFormComponent>,
@@ -44,6 +44,16 @@ export class ServiceFormComponent {
   ) {
     this.car = this.carService.getCarById(data.carId)!;
     this.initializeForm();
+  }
+
+  ngOnInit(): void {
+    this.carsChangedSubscription = this.carService.cars$.subscribe(() => {
+      this.car = this.carService.getCarById(this.car.id)!;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.carsChangedSubscription.unsubscribe();
   }
 
   initializeForm(): void {
@@ -60,7 +70,7 @@ export class ServiceFormComponent {
         id: Date.now(),
         ...this.serviceForm.value
       };
-      this.car.services.push(serviceData);
+      this.car.services = [...this.car.services, serviceData];
       this.carService.updateCar(this.car);
       this.dialogRef.close(true);
     }
