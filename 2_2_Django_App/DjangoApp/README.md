@@ -1,29 +1,36 @@
-# Django Blog Application
+# 2.2 Django Blog Application
 
-## Overview
+## Description
 
-A Django-based blog application that allows users to register, log in, create, update, and delete blog posts. Only
-authenticated users can create and manage their own posts.
+A Django-based blog application that allows users to register, log in, create, update, and delete blog posts. 
+Only authenticated users can create and manage their own posts. 
+The application uses Bootstrap for responsive design and django-crispy-forms for enhanced form rendering. 
+It is containerized using Docker for easy deployment and scalability.
 
 ## Features
 
 - User Registration and Authentication
 - Create, Read, Update, Delete (CRUD) operations for blog posts
 - Responsive design using Bootstrap
-- User-friendly forms with crispy-forms
+- User-friendly forms with django-crispy-forms
+- Dockerized setup for easy deployment
+- Admin panel for managing users and posts
+- CSRF protection for secure form submissions
 
-## Installation
+## Technologies Used
 
-1. **Clone the repository:**
+- **Django:** High-level Python web framework.
+- **Bootstrap:** Frontend framework for responsive design.
+- **django-crispy-forms:** For better form rendering.
+- **Docker:** Containerization platform for deployment.
+- **PostgreSQL:** Database for storing application data.
+- **Gunicorn:** WSGI HTTP server for running the application.
 
-    ```bash
-    git clone https://github.com/yourusername/django-blog.git
-    cd django-blog
-    ```
+## How to Run
 
-2. **Set up .env file**
+1. **Set up .env file**
 
-    - Create a new `.env` file in the root directory.
+    - Create a new `.env` file in this directory.
     - Add the following environment variables to the `.env` file:
 
     ```
@@ -37,32 +44,32 @@ authenticated users can create and manage their own posts.
     POSTGRES_PORT=5432
    ```
 
-3. **Build and run docker-compose:**
+2. **Build and run docker-compose:**
 
     ```bash
     docker-compose up -d 
     ```
 
-4. **Collect static files:**
+3. **Collect static files:**
 
     ```bash
     docker-compose exec web python manage.py collectstatic --noinput  
     ```
 
-5. **Apply migrations:**
+4. **Apply migrations:**
 
     ```bash
     docker-compose exec web python manage.py makemigrations
     docker-compose exec web python manage.py migrate
     ```
 
-6. **Create a superuser (optional):**
+5. **Create a superuser (optional):**
 
     ```bash
     docker-compose exec web python manage.py createsuperuser
     ```
 
-7. **Access the application:**
+6. **Access the application:**
 
     - Frontend: `http://localhost:8000/`
     - Admin Panel: `http://localhost:8000/admin/`
@@ -80,9 +87,3 @@ authenticated users can create and manage their own posts.
 
 4. **Edit or Delete Posts:**
    - On the post list or detail page, you can edit or delete your own posts.
-
-## Technologies Used
-
-- **Django**: High-level Python web framework.
-- **Bootstrap**: Frontend framework for responsive design.
-- **django-crispy-forms**: For better form rendering.
